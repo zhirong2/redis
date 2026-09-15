@@ -3,9 +3,9 @@
 
 #include <string>
 
-class RedisCommanderHandler {
+class RedisCommandHandler {
 public:
-    RedisCommanderHandler();
+    RedisCommandHandler();
 
     std::string processCommand(const std::string& commandLine);
 

@@ -1,8 +1,9 @@
-#include <include/RedisCommander.h>
+#include "../include/RedisCommandHandler.h"
 
 #include <vector>
 #include <sstream>
 #include <algorithm>
+#include <iostream>
 
 // RESP parser:
 // *2\r\n$4\r\n\PING\r\n$4\r\nTEST\r\n
@@ -60,13 +61,17 @@ std::vector<std::string> parseRespCommand(const std::string &input) {
 
 }
 
-RedisCommanderHandler::RedisCommanderHandler() {}
+RedisCommandHandler::RedisCommandHandler() {}
 
-std::string RedisCommanderHandler::processCommand(const std::string& commandLine) {
+std::string RedisCommandHandler::processCommand(const std::string& commandLine) {
 
     std::vector<std::string> tokens = parseRespCommand(commandLine);
 
-    if (tokens.empty()) return "Error: Empty command \r\n";
+    if (tokens.empty()) return "-Error: Empty command \r\n";
+
+    for (auto& t : tokens) {
+        std::cout << t << "\n";
+    }
 
     std::string cmd = tokens[0];
     std::transform(cmd.begin(), cmd.end(), cmd.begin(), ::toupper);
