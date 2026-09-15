@@ -9,6 +9,9 @@ OBJS := $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(SRCS))
 
 TARGET = my_redis_server
 
+TEST_TARGET = build/redis_protocol_tests
+TEST_SRCS = tests/RedisProtocolTests.cpp src/RedisCommandHandler.cpp src/RedisDatabase.cpp src/RespParser.cpp
+
 all: $(TARGET)
 
 $(BUILD_DIR):
@@ -28,3 +31,8 @@ rebuild: clean all
 run: all
 	 ./$(TARGET)
 
+test: $(TEST_TARGET)
+	./$(TEST_TARGET)
+
+$(TEST_TARGET): $(TEST_SRCS) | $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) -Iinclude $(TEST_SRCS) -o $@
