@@ -1,23 +1,25 @@
 #include "../include/RedisServer.h"
 
-#include <iostream>
-#include <stdexcept>
+#include<iostream>
+#include <thread>
+#include <chrono>
 
 int main(int argc, char* argv[]) {
     int port = 6379;
 
-    try {
-        if (argc >= 2) port = std::stoi(argv[1]);
-    } catch (const std::exception&) {
-        std::cerr << "Usage: " << argv[0] << " [port]\n";
-        return 1;
-    }
-    if (port < 1 || port > 65535) {
-        std::cerr << "Port must be between 1 and 65535\n";
-        return 1;
-    }
+    if (argc >= 2) port = std::stoi(argv[1]);
 
     RedisServer server(port);
+
+    // Background persistance: Dump the database every 300s (5 * 60 save database)
+    std::thread persistentThread([](){
+        while (true) {
+            std::this_thread::sleep_for(std::chrono::seconds(300));
+            // Dump the database
+
+        }
+    });
+    persistentThread.detach();
 
     server.run();
     return 0;
