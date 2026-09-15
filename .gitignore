@@ -1,4 +1,1 @@
-.worktrees/
-build/
-my_redis_server
-
+.vscode
